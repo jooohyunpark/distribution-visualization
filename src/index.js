@@ -9,8 +9,13 @@ const X = 'pl_radj'
 console.log('original data size: ', _data.length)
 
 let data = _data.filter(el => {
-  return (el.pl_name && el.pl_radj && el.st_dist && el.pl_orbper) !== null
+  return (
+    (el.pl_name && el.st_dist && el.pl_orbper && el.pl_radj && el.pl_bmassj) !==
+    null
+  )
 })
+
+// data = data.filter(d => d.pl_radj < 1)
 
 console.log('computed data length: ', data.length)
 
@@ -18,11 +23,13 @@ const max_distance = max('st_dist')
 const min_distance = min('st_dist')
 const max_radius = max('pl_radj')
 const min_radius = min('pl_radj')
+const max_mass = max('pl_bmassj')
+const min_mass = min('pl_bmassj')
 
-let test = data.filter(d => {
-  return d.pl_radj > 2
-})
-console.log(test)
+// let test = data.filter(d => {
+//   return d.pl_radj > 2
+// })
+// console.log(test.length)
 
 ////////////////////////////////////////////////
 
@@ -52,7 +59,7 @@ const init = () => {
     .range([0, _width])
     .domain(
       d3.extent(data, function(d) {
-        // return Math.pow(d.pl_radj, d.pl_bmassj)
+        // return d.pl_radj + d.pl_bmassj
         return d[X]
       })
     )
@@ -70,8 +77,11 @@ const init = () => {
     .data(data)
     .enter()
     .append('circle')
+    .attr('id', function(d) {
+      return d.pl_name
+    })
     .attr('cx', function(d) {
-      // return xScale(Math.pow(d.pl_radj, d.pl_bmassj))
+      // return xScale(d.pl_radj + d.pl_bmassj)
       return xScale(d[X])
     })
     .attr('cy', function(d) {
