@@ -1,1 +1,1 @@
-This is a test repo for data mapping purpose.
+This is a repo for data mapping test purpose.
