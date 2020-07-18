@@ -9,13 +9,12 @@ const X = 'pl_radj'
 console.log('original data size: ', _data.length)
 
 let data = _data.filter(el => {
-  return (
-    (el.pl_name && el.st_dist && el.pl_orbper && el.pl_radj && el.pl_bmassj) !==
-    null
-  )
+  return (el.pl_name && el.st_dist && el.pl_orbper && el.pl_radj) !== null
 })
 
-// data = data.filter(d => d.pl_radj < 1)
+data = data.filter(d => {
+  return d.pl_radj < 0.0892
+})
 
 console.log('computed data length: ', data.length)
 
@@ -26,8 +25,19 @@ const min_radius = min('pl_radj')
 const max_mass = max('pl_bmassj')
 const min_mass = min('pl_bmassj')
 
+let calc = data.map(d => {
+  const index = Math.floor(
+    87 -
+      Math.min(((d.pl_radj - min_radius) / (max_radius - min_radius)) * 88, 87)
+  )
+  // console.log(index)
+  return index
+})
+
+console.log(d3.max(calc), d3.min(calc))
+
 // let test = data.filter(d => {
-//   return d.pl_radj > 2
+//   return d.pl_radj < 0.0892
 // })
 // console.log(test.length)
 
